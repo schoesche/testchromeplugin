@@ -6,20 +6,9 @@
  -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
-    </style>
+    <title>Georg's erste extension welche aufpopt</title>
+
+    <link rel="stylesheet" href="popup.css"/>
 
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
@@ -28,10 +17,21 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
     <script src="popup.js"></script>
+    <base target="_blank">
   </head>
   <body>
+  <div>
+    <h3>hoi welt</h3>
+  </div>
+
+
     <div id="status"></div>
     <img id="image-result" hidden>
+
+
+  <div>
+    <a href="http://www.sbb.ch">SBB</a>
+  </div>
   </body>
 </html>
 
