@@ -15,35 +15,7 @@
 
   <base target="_blank">
 </head>
-
-
-
-
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
-<!--<html>
-  <head>
-    <title>Georg's erste extension welche aufpopt</title>
-
-    <link rel="stylesheet" href="popup.css"/>
-
-    &lt;!&ndash;
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     &ndash;&gt;
-
-    &lt;!&ndash;<script src="popup.js"></script>&ndash;&gt;
-    <script src="lib/jquery-2.1.1.min.js"></script>
-    <script src="filemanipulator.js"></script>
-
-    <base target="_blank">
-  </head>-->
-  <body ng-app="Testchromplugin">
+<body ng-app="Testchromplugin" ng-csp>
   <div>
     <h3>hoi welt 2</h3>
   </div>
