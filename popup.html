@@ -1,27 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Georg's erste extension welche aufpopt</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="popup.css"/>
+
+  <script src="lib/jquery-2.1.1.min.js"></script>
+  <script src="lib/angular.js"></script>
+
+  <script src="filemanipulator.js"></script>
+
+  <base target="_blank">
+</head>
+
+
+
+
 <!--
  This page is shown when the extension button is clicked, because the
  "browser_action" field in manifest.json contains the "default_popup" key with
  value "popup.html".
  -->
-<html>
+<!--<html>
   <head>
     <title>Georg's erste extension welche aufpopt</title>
 
     <link rel="stylesheet" href="popup.css"/>
 
-    <!--
+    &lt;!&ndash;
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
-    <script src="popup.js"></script>
+     &ndash;&gt;
+
+    &lt;!&ndash;<script src="popup.js"></script>&ndash;&gt;
+    <script src="lib/jquery-2.1.1.min.js"></script>
+    <script src="filemanipulator.js"></script>
+
     <base target="_blank">
-  </head>
-  <body>
+  </head>-->
+  <body ng-app="Testchromplugin">
   <div>
-    <h3>hoi welt</h3>
+    <h3>hoi welt 2</h3>
   </div>
 
 
