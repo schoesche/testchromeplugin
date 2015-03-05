@@ -6,7 +6,7 @@ alert("gugus");
 
 angular.module("Testchromplugin", [])
 
-    .controller('filemanipulatorCtrl', ['$scope', function ($scope) {
+    .controller('filemanipulatorCtrl', ['$scope', 'FileService', function ($scope, FileService) {
 
         var vm = this;
         vm.lala = "test super ich bin angular ist geladen";
@@ -19,7 +19,23 @@ angular.module("Testchromplugin", [])
 
         vm.speichertext = "ich bin ein guter text";
 
-        /*  ******************* */
+
+        vm.readFile = function() {
+            vm.lala = "bravo read file";
+            vm.lala = FileService.readFile();
+        };
+
+        vm.writeLinksFile = function() {
+            vm.lala = "bravo write link file";
+            FileService.saveFileAs(vm.speichertext);
+        };
+
+    }]).
+
+
+    factory('FileService', function() {
+
+        var factory = {};
 
         function errorHandler(e) {
             console.error(e);
@@ -79,43 +95,23 @@ angular.module("Testchromplugin", [])
         }
 
 
-        /* *************************** */
-
-        var saveFileAs = function () {
+        factory.saveFileAs = function (data) {
             var fileName =  'settings.json';/*chosenEntry.name*/
             var config = {type: 'saveFile', suggestedName: fileName};
 
             chrome.fileSystem.chooseEntry(config, function(writableEntry) {
-                var blob = new Blob([vm.speichertext], {type: 'text/plain'});
+                var blob = new Blob([data], {type: 'text/plain'});
                 writeFileEntry(writableEntry, blob, function(e) {
                     output.textContent = 'Write complete :)';
-                    vm.lala = "jupidu ich bin geschrieben worden";
                 });
             });
-
-            /*chrome.fileSystem.chooseEntry({type: 'saveFile',suggestedName: 'settings.json'}, function (writableFileEntry) {
-
-
-               *//* writableFileEntry.createWriter(function (writer) {
-                    writer.onerror = errorHandler;
-                    writer.onwriteend = function (e) {
-                        console.log('write complete');
-                    };
-
-                    var blob = new Blob([dummyData], {type: 'text/plain'});
-                    *//**//*writer.write(new Blob(['1234567890'], {type: 'application/json'}));*//**//*
-                    writer.write(blob);
-
-                }, errorHandler);*//*
-            });*/
-
         }
 
-        var readFile = function () {
+        factory.readFile = function () {
             chrome.fileSystem.chooseEntry(
                 {
                     type: 'openFile', accepts: [{
-                    extensions: ['html']
+                    extensions: ['html','json','txt']
                 }]
                 },
                 function (fileEntry) {
@@ -134,17 +130,7 @@ angular.module("Testchromplugin", [])
                 });
         }
 
-        vm.readFile = function() {
-            vm.lala = "bravo read file";
-        };
+        return factory;
 
-        vm.writeLinksFile = function() {
-            vm.lala = "bravo write link file";
-            saveFileAs();
-        };
-
-    /*saveFileAs();*/
-      /*  readFile();*/
-
-    }]);
+    });
 
