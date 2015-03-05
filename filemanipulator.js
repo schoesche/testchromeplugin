@@ -6,7 +6,7 @@ alert("gugus");
 
 angular.module("Testchromplugin", [])
 
-    .controller('filemanipulatorCtrl', ['$scope', 'FileService', function ($scope, FileService) {
+    .controller('filemanipulatorCtrl', ['$scope', '$q', 'FileService', function ($scope, $q, FileService) {
 
         var vm = this;
         vm.lala = "test super ich bin angular ist geladen";
@@ -20,12 +20,14 @@ angular.module("Testchromplugin", [])
         vm.speichertext = "ich bin ein guter text";
 
 
-        vm.readFile = function() {
+        vm.readFile = function () {
+
             vm.lala = "bravo read file";
             vm.lala = FileService.readFile();
+
         };
 
-        vm.writeLinksFile = function() {
+        vm.writeLinksFile = function () {
             vm.lala = "bravo write link file";
             FileService.saveFileAs(vm.speichertext);
         };
@@ -33,7 +35,7 @@ angular.module("Testchromplugin", [])
     }]).
 
 
-    factory('FileService', function() {
+    factory('FileService', ['$q', function ($q) {
 
         var factory = {};
 
@@ -45,14 +47,14 @@ angular.module("Testchromplugin", [])
             // set a watchdog to avoid eventual locking:
             var start = Date.now();
             // wait for a few seconds
-            var reentrant = function() {
-                if (writer.readyState===writer.WRITING && Date.now()-start<4000) {
+            var reentrant = function () {
+                if (writer.readyState === writer.WRITING && Date.now() - start < 4000) {
                     setTimeout(reentrant, 100);
                     return;
                 }
-                if (writer.readyState===writer.WRITING) {
-                    console.error("Write operation taking too long, aborting!"+
-                    " (current writer readyState is "+writer.readyState+")");
+                if (writer.readyState === writer.WRITING) {
+                    console.error("Write operation taking too long, aborting!" +
+                    " (current writer readyState is " + writer.readyState + ")");
                     writer.abort();
                 }
                 else {
@@ -68,7 +70,7 @@ angular.module("Testchromplugin", [])
                 return;
             }
 
-            writableEntry.createWriter(function(writer) {
+            writableEntry.createWriter(function (writer) {
 
                 writer.onerror = errorHandler;
                 writer.onwriteend = callback;
@@ -77,15 +79,15 @@ angular.module("Testchromplugin", [])
                 // loaded.
                 if (opt_blob) {
                     writer.truncate(opt_blob.size);
-                    waitForIO(writer, function() {
+                    waitForIO(writer, function () {
                         writer.seek(0);
                         writer.write(opt_blob);
                     });
                 }
                 else {
-                    chosenEntry.file(function(file) {
+                    chosenEntry.file(function (file) {
                         writer.truncate(file.fileSize);
-                        waitForIO(writer, function() {
+                        waitForIO(writer, function () {
                             writer.seek(0);
                             writer.write(file);
                         });
@@ -94,43 +96,78 @@ angular.module("Testchromplugin", [])
             }, errorHandler);
         }
 
+        // for files, read the text content into the textarea
+        function loadFileEntry(_chosenEntry) {
+            var chosenEntry = _chosenEntry;
+            var fileData = {};
+            chosenEntry.file(function (file) {
+                readAsText(chosenEntry, function (result) {
+                    console.log("text value" + result);
+                    /*textarea.value = result;*/
+                    fileData = result;
+                });
+                // Update display.
+                /* saveFileButton.disabled = false; // allow the user to save the content
+                 displayEntryData(chosenEntry);*/
+            });
+            return fileData;
+        }
+
+        function readAsText(fileEntry, callback) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onerror = errorHandler;
+                reader.onload = function (e) {
+                    callback(e.target.result);
+                };
+
+                reader.readAsText(file);
+            });
+        }
+
 
         factory.saveFileAs = function (data) {
-            var fileName =  'settings.json';/*chosenEntry.name*/
+            var fileName = 'settings.json';
+            /*chosenEntry.name*/
             var config = {type: 'saveFile', suggestedName: fileName};
 
-            chrome.fileSystem.chooseEntry(config, function(writableEntry) {
+            chrome.fileSystem.chooseEntry(config, function (writableEntry) {
                 var blob = new Blob([data], {type: 'text/plain'});
-                writeFileEntry(writableEntry, blob, function(e) {
+                writeFileEntry(writableEntry, blob, function (e) {
                     output.textContent = 'Write complete :)';
                 });
             });
         }
 
         factory.readFile = function () {
-            chrome.fileSystem.chooseEntry(
-                {
-                    type: 'openFile', accepts: [{
-                    extensions: ['html','json','txt']
-                }]
-                },
-                function (fileEntry) {
-                    if (!fileEntry) {
-                        $("#OuptutText").html("User did not choose a file");
-                        return;
-                    }
-                    fileEntry.file(function (file) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            document.getElementById("HTMLFile").value = e.target.result;
-                        };
-                        reader.readAsText(file);
-                    });
+          /*  var deferred = $q.defer();
+            deferred.resolve(*/
 
-                });
+            var result = "gugus";
+            var accepts = [{
+                mimeTypes: ['text/*'],
+                extensions: ['js', 'css', 'txt', 'html', 'xml', 'tsv', 'csv', 'rtf', 'json']
+            }];
+
+
+            chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function (theEntry) {
+                if (!theEntry) {
+                    output.textContent = 'No file selected.';
+                    return;
+                }
+                // use local storage to retain access to this file
+                chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
+                result = loadFileEntry(theEntry);
+            });
+            return result;
+
+         /*   )
+            return deferred.promise();*/
+
         }
 
         return factory;
 
-    });
+    }]);
 
