@@ -1,4 +1,5 @@
 'use strict';
+alert("gugus");
 /**
  * Created by U116064 on 03.03.2015.
  */
@@ -7,6 +8,8 @@ angular.module("Testchromplugin", [])
 
 .controller('filemanipulatorCtrl', ['$scope', function ($scope) {
 
+        var vm = this;
+        vm.lala = "test super ich bin angular ist geladen";
     console.log("hallo test 1");
 
     alert("ahhhhh super angular");
