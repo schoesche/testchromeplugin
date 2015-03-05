@@ -1,12 +1,12 @@
 'use strict';
-alert("gugs");
+/*alert("gugs");*/
 /**
  * Created by U116064 on 03.03.2015.
  */
 
-var app = angular.module("Testchromplugin", []);
+angular.module("Testchromplugin", [])
 
-app.controller('filemanipulatorCtrl', ['$scope', function ($scope) {
+.controller('filemanipulatorCtrl', ['$scope', function ($scope) {
 
     console.log("hallo test 1");
 
