@@ -30,6 +30,24 @@
   <div>
     <a href="http://www.sbb.ch">SBB</a>
   </div>
+
+<div>
+  <nav>
+    <button data-ng-click="vm.readFile()">Read File</button>
+    <button data-ng-click="vm.writeLinksFile()">Write File</button>
+  </nav>
+
+  Path: <input type="text" id="file_path" readonly>
+  <span>Size: <span id="file_size"></span> bytes</span>
+
+  <output></output>
+
+  <textarea></textarea>
+
+  <p><button id="save_file" disabled>Save As</button></p>
+</div>
+
+
   </body>
 </html>
 

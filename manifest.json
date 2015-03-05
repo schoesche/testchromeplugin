@@ -11,8 +11,17 @@
     }
   },
   "permissions": [
+    {"fileSystem": ["write", "retainEntries", "directory"]},
+    "storage",
     "fileSystem",
     "unlimitedStorage"
-  ]
+  ],
+  "file_handlers": {
+    "text": {
+      "types": [
+        "text/*"
+      ]
+    }
+  }
 
 }
