@@ -1,0 +1,56 @@
+<!DOCTYPE html >
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Georg's erste extension welche aufpopt</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="popup.css"/>
+
+  <script src="lib/jquery-2.1.1.min.js"></script>
+  <script src="lib/angular.js"></script>
+  <script src="lib/zip.js"></script>
+
+  <script src="filemanipulator.js"></script>
+
+  <base target="_blank">
+</head>
+<body data-ng-app="Testchromplugin"  data-ng-csp="" data-ng-controller="filemanipulatorCtrl as vm">
+  <div>
+    <h3>hoi welt 2</h3>
+  {{vm.lala}}
+  </div>
+
+
+    <div id="status"></div>
+    <img id="image-result" hidden>
+
+
+
+  <div>
+    <a href="http://www.sbb.ch">SBB</a>
+  </div>
+
+<div>
+  <nav>
+    <button data-ng-click="vm.readFile()">Read File</button>
+    <button data-ng-click="vm.writeLinksFile()">Write File</button>
+  </nav>
+
+  {{vm.lala2}}
+
+<!--  Path: <input type="text" id="file_path" readonly>
+  <span>Size: <span id="file_size"></span> bytes</span>
+
+  <output></output>
+
+  <textarea></textarea>
+
+  <p><button id="save_file" disabled>Save As</button></p>-->
+</div>
+
+
+  </body>
+</html>
+

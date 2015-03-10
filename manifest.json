@@ -5,11 +5,11 @@
 
   "manifest_version": 2,
 
-  "app": {
-    "background": {
-      "scripts": ["background.js"]
-    }
-  },
+    "app": {
+      "background": {
+        "scripts": ["background.js"]
+      }
+    },
   "permissions": [
     {"fileSystem": ["write", "retainEntries", "directory"]},
     "storage",
@@ -19,7 +19,7 @@
   "file_handlers": {
     "text": {
       "types": [
-        "text/*"
+        "text"
       ]
     }
   }
