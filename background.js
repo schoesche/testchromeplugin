@@ -11,10 +11,3 @@ chrome.app.runtime.onLaunched.addListener(function() {
     });
 });
 
-
-/* extends
- chrome.browserAction.onClicked.addListener(function(activeTab){
- var newURL = "popup.html";
- chrome.tabs.create({ url: newURL });
- });
- */

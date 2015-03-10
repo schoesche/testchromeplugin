@@ -1,5 +1,5 @@
 'use strict';
-alert("gugus");
+
 /**
  * Created by U116064 on 03.03.2015.
  */
@@ -11,28 +11,28 @@ angular.module("Testchromplugin", [])
         var vm = this;
         vm.lala = "test super ich bin angular ist geladen";
         console.log("hallo test 1");
-
-        alert("ahhhhh super angular");
-
-        var dummyData = {"testttt": "lalalala"};
-
-
         vm.speichertext = "ich bin ein guter text";
 
-
         vm.readFile = function () {
-
             vm.lala = "bravo read file";
-            vm.lala = FileService.readFile();
-
+            var promiseReadFile = FileService.readFile();
+            promiseReadFile.then(function (result) {
+                console.log("jupiduuu:" + result);
+                vm.lala = result;
+                vm.lala2 = result;
+            }, function (reason) {
+                vm.lala2 = ('Failed: ' + reason);
+            }, function (update) {
+                vm.lala2 = ('Got notification: ' + update);
+            });
         };
 
         vm.writeLinksFile = function () {
             vm.lala = "bravo write link file";
             FileService.saveFileAs(vm.speichertext);
         };
-
-    }]).
+    }
+    ]).
 
 
     factory('FileService', ['$q', function ($q) {
@@ -135,14 +135,13 @@ angular.module("Testchromplugin", [])
             chrome.fileSystem.chooseEntry(config, function (writableEntry) {
                 var blob = new Blob([data], {type: 'text/plain'});
                 writeFileEntry(writableEntry, blob, function (e) {
-                    output.textContent = 'Write complete :)';
+                    console.log('Write complete :)');
                 });
             });
-        }
+        };
 
         factory.readFile = function () {
-          /*  var deferred = $q.defer();
-            deferred.resolve(*/
+            var deferred = $q.defer();
 
             var result = "gugus";
             var accepts = [{
@@ -150,22 +149,22 @@ angular.module("Testchromplugin", [])
                 extensions: ['js', 'css', 'txt', 'html', 'xml', 'tsv', 'csv', 'rtf', 'json']
             }];
 
-
+            deferred.resolve(
             chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function (theEntry) {
                 if (!theEntry) {
-                    output.textContent = 'No file selected.';
+                    console.log('No file selected.');
                     return;
                 }
                 // use local storage to retain access to this file
                 chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
                 result = loadFileEntry(theEntry);
-            });
-            return result;
+                return result;
+            })
+            );
 
-         /*   )
-            return deferred.promise();*/
+            return deferred.promise;
 
-        }
+        };
 
         return factory;
 
